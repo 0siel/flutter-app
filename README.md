@@ -1,16 +1,113 @@
-# flutter_application_1
+# Cat App (Flutter)
 
-A new Flutter project.
+Esta es una aplicación de ejemplo construida con Flutter que consume [The Cat API](https://thecatapi.com/) para mostrar imágenes de gatos. Los usuarios pueden navegar por las imágenes, agregarlas a una lista de favoritos y ver una página de detalles ficticia para cada gato.
 
-## Getting Started
+Este proyecto comenzó como el tutorial oficial "Namer App" de Flutter y fue evolucionando para incluir:
 
-This project is a starting point for a Flutter application.
+- Consumo de APIs (HTTP).
+- Gestión de estado con `Provider`.
+- Navegación entre pantallas.
+- Estructura de archivos escalable.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Cómo Ejecutar la Aplicación con VS Code
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Para poner en marcha este proyecto en tu máquina local usando Visual Studio Code, sigue estos pasos:
+
+### Prerrequisitos
+
+Asegúrate de tener instalado lo siguiente:
+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- La extensión de [Flutter para VS Code](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
+
+### Pasos de Instalación y Ejecución
+
+1.  **Clona el repositorio** (o simplemente descarga los archivos ZIP y descomprímelos):
+
+    ```sh
+    git clone [URL_DE_TU_REPOSITORIO]
+    ```
+
+2.  **Abre el proyecto en VS Code**:
+
+    ```sh
+    cd [NOMBRE_DE_LA_CARPETA_DEL_PROYECTO]
+    code .
+    ```
+
+3.  **Instala las dependencias**:
+    Abre la paleta de comandos (`Ctrl+Shift+P` o `Cmd+Shift+P`) y escribe **"Flutter: Get Packages"**.
+    _O, alternativamente_, abre un terminal integrado en VS Code (`View` -> `Terminal` o `Ctrl+\` \`) y ejecuta:
+
+    ```sh
+    flutter pub get
+    ```
+
+4.  **Selecciona un dispositivo**:
+    En la barra de estado inferior derecha de VS Code, haz clic donde dice "No Device" (o el nombre de un dispositivo). Se abrirá una lista en la parte superior. Elige un emulador de Android, un simulador de iOS, un dispositivo físico conectado o "Chrome (web)" para ejecutar la app en tu navegador.
+
+5.  **Ejecuta la aplicación**:
+    Presiona `F5` en tu teclado o ve al menú "Run" > "Start Debugging". VS Code compilará la aplicación y la lanzará en el dispositivo que seleccionaste.
+
+---
+
+## 🛠️ Decisiones de Desarrollo y Arquitectura
+
+Este proyecto fue diseñado para ser un ejercicio de aprendizaje. Las siguientes son las decisiones clave de arquitectura que se tomaron:
+
+### 1. Gestión de Estado: `Provider`
+
+Se eligió el paquete `provider` (específicamente `ChangeNotifier` y `ChangeNotifierProvider`) para manejar el estado global de la aplicación.
+
+- **Por qué**: Es el enfoque recomendado en los tutoriales oficiales de Flutter, es ligero y fácil de entender. Separa limpiamente la lógica de negocio (`MyAppState`) de la interfaz de usuario (los widgets).
+- **Cómo**:
+  - `MyAppState` extiende `ChangeNotifier` y contiene la lógica central (lista de imágenes, favoritos, estado de carga).
+  - Cuando un dato cambia (ej. `getImages()` o `toggleFavorite()`), se llama a `notifyListeners()`.
+  - Los widgets que necesitan estos datos (como `GeneratorPage` y `FavoritesPage`) usan `context.watch<MyAppState>()` para "escuchar" esos cambios y reconstruirse automáticamente.
+
+### 2. Estructura del Proyecto (Separación de Conceptos)
+
+Para evitar tener todo el código en un solo archivo (`main.dart`), el proyecto se organizó en una estructura de carpetas modular:
+
+- `/lib/pages`: Contiene los widgets que representan pantallas completas (ej. `generator_page.dart`, `favorites_page.dart`, `details_page.dart`).
+- `/lib/providers`: Almacena las clases `ChangeNotifier` (ej. `my_app_state.dart`).
+- `/lib/services`: Contiene la lógica para interactuar con servicios externos, como APIs (ej. `cat_api_service.dart`). Esto aísla la lógica de red del resto de la app.
+- `/lib/models`: Define las clases y estructuras de datos (ej. `cat_details.dart`).
+
+### 3. Operaciones Asíncronas (Consumo de API)
+
+La aplicación consume `The Cat API` para obtener imágenes.
+
+- **Por qué**: Es fundamental para cualquier app moderna aprender a manejar operaciones de red que toman tiempo.
+- **Cómo**:
+  - Se usa el paquete `http` con `async/await` en `cat_api_service.dart` para realizar las llamadas `http.get`.
+  - `MyAppState` maneja una variable `isLoading`. Esta se pone en `true` antes de la llamada a la API y en `false` cuando la llamada termina (ya sea con éxito o con error).
+  - La UI (como `GeneratorPage`) usa esta variable `isLoading` para mostrar un `CircularProgressIndicator` mientras los datos están en camino.
+
+### 4. Modelo de Datos y "Datos Ficticios"
+
+Para la página de detalles, queríamos mostrar información consistente para cada gato (nombre, dueño, edad) sin que la API nos la proporcionara.
+
+- **Cómo**:
+  - Se creó una clase `CatDetails` en `/lib/models` para dar forma a estos datos.
+  - En `MyAppState`, se implementó un sistema de "caché" usando un `Map<String, CatDetails>`.
+  - La primera vez que un usuario pide los detalles de una `imageUrl`, se generan datos ficticios aleatorios y se guardan en el `Map` usando la URL como llave.
+  - Las siguientes veces que se pidan los detalles de esa _misma_ URL, se devolverán los datos ya guardados. Esto asegura que un gato específico siempre tenga el mismo nombre y dueño.
+
+### 5. Navegación
+
+Se utiliza el sistema de navegación imperativa estándar de Flutter.
+
+- **Cómo**: Se usa `Navigator.push()` para mover al usuario a una nueva pantalla.
+- **Paso de Datos**: Para abrir la página de detalles, se pasa la `imageUrl` necesaria a través del constructor de la nueva página:
+  ```dart
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => DetailsPage(imageUrl: url),
+    ),
+  );
+  ```
