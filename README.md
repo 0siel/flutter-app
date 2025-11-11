@@ -9,7 +9,9 @@ Este proyecto comenzó como el tutorial oficial "Namer App" de Flutter y fue evo
 - Navegación entre pantallas.
 - Estructura de archivos escalable.
 
----
+## Cat App (Flutter)
+
+ <img src="image.png" alt="Logo Title Text 1" width="180" style="border-radius: 8px; display: block; margin: 0 auto;" />
 
 ## Ejecutar la Aplicación con VS Code
 
