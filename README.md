@@ -13,6 +13,9 @@ Este proyecto comenzó como el tutorial oficial "Namer App" de Flutter y fue evo
 
  <img src="image.png" alt="Logo Title Text 1" width="180" style="border-radius: 8px; display: block; margin: 0 auto;" />
 
+## Video con explicación del Proyecto
+https://www.youtube.com/watch?v=i0J4I5jcRPg
+
 ## Ejecutar la Aplicación con VS Code
 
 Para poner en marcha este proyecto en tu máquina local usando Visual Studio Code, sigue estos pasos:
