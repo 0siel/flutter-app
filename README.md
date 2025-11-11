@@ -11,7 +11,7 @@ Este proyecto comenzó como el tutorial oficial "Namer App" de Flutter y fue evo
 
 ---
 
-## 🚀 Cómo Ejecutar la Aplicación con VS Code
+## Ejecutar la Aplicación con VS Code
 
 Para poner en marcha este proyecto en tu máquina local usando Visual Studio Code, sigue estos pasos:
 
@@ -28,13 +28,13 @@ Asegúrate de tener instalado lo siguiente:
 1.  **Clona el repositorio** (o simplemente descarga los archivos ZIP y descomprímelos):
 
     ```sh
-    git clone [URL_DE_TU_REPOSITORIO]
+    git clone https://github.com/0siel/flutter-app.git
     ```
 
 2.  **Abre el proyecto en VS Code**:
 
     ```sh
-    cd [NOMBRE_DE_LA_CARPETA_DEL_PROYECTO]
+    cd flutter-application_1
     code .
     ```
 
@@ -54,7 +54,7 @@ Asegúrate de tener instalado lo siguiente:
 
 ---
 
-## 🛠️ Decisiones de Desarrollo y Arquitectura
+## Decisiones de Desarrollo y Arquitectura
 
 Este proyecto fue diseñado para ser un ejercicio de aprendizaje. Las siguientes son las decisiones clave de arquitectura que se tomaron:
 
@@ -111,3 +111,27 @@ Se utiliza el sistema de navegación imperativa estándar de Flutter.
     ),
   );
   ```
+
+### 6. Manejo de Errores en Imágenes
+
+Para mejorar la experiencia del usuario, se agregó un manejo de errores al cargar imágenes.
+
+- **Cómo**: Se utiliza el parámetro `errorBuilder` en el widget `Image.network` para mostrar un ícono de imagen rota si la carga falla.
+  ```dart
+  errorBuilder: (_, __, ___) => Center(
+    child: Icon(Icons.broken_image, size: 50),
+  ),
+  ```
+
+## Mejoras Futuras
+
+Aunque la aplicación es funcional, hay muchas mejoras que se podrían implementar para hacerla más robusta y completa:
+
+- **Persistencia de Datos**: Actualmente, los favoritos se pierden cada vez que se cierra la app. Se podría usar el paquete `shared_preferences` o una base de datos local como `sqflite` para guardar los favoritos permanentemente.
+- **Eliminar Favoritos**: Implementar la funcionalidad para que el usuario pueda eliminar un elemento de la lista de favoritos, ya sea desde la misma lista o desde la página de detalles.
+- **Mejor Manejo de Errores**: Mostrar mensajes de error más amigables al usuario (ej. un "Snackbar") cuando la llamada a la API falla, en lugar de solo mostrar un texto o un ícono de imagen rota.
+- **Pruebas (Testing)**: Escribir pruebas unitarias (Unit Tests) para la lógica de `MyAppState` y la función `fetchCatImages`, y pruebas de widgets (Widget Tests) para las pantallas principales.
+
+## Conclusión
+
+Este proyecto sirve como una demostración práctica de los conceptos fundamentales de Flutter. Pasando del tutorial básico a una aplicación con estado, navegación y consumo de servicios externos, cubre el ciclo de vida de desarrollo esencial para construir aplicaciones móviles pequeñas y medianas.
