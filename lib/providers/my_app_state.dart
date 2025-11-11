@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/cat_api_service.dart'; // <-- UPDATE THIS
-import 'package:flutter_application_1/services/cat_api_service.dart'; // <-- UPDATE THIS
-import 'package:flutter_application_1/models/cat_details.dart'; // <-- ADD THIS
+import 'package:flutter_application_1/services/cat_api_service.dart';
+import 'package:flutter_application_1/services/cat_api_service.dart';
+import 'package:flutter_application_1/models/cat_details.dart'; //
 import 'dart:math';
 
 class MyAppState extends ChangeNotifier {

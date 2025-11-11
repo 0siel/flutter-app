@@ -8,7 +8,9 @@ Future<List<String>> fetchCatImages() async {
   try {
     final response = await http.get(url);
     if (response.statusCode == 200) {
+      // wtf jsonDecode response.body is List<dynamic>
       final List<dynamic> data = jsonDecode(response.body);
+      //print('okokoko$data');
       return data.map((item) => item['url'] as String).toList();
     } else {
       throw Exception('Failed to fetch images: ${response.statusCode}');

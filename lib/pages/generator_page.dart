@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/providers/my_app_state.dart'; // <-- UPDATE THIS
-import 'package:flutter_application_1/pages/details_page.dart'; // <-- ADD THIS
+import 'package:flutter_application_1/providers/my_app_state.dart';
+import 'package:flutter_application_1/pages/details_page.dart';
 
 class GeneratorPage extends StatelessWidget {
   @override
@@ -38,10 +38,9 @@ class GeneratorPage extends StatelessWidget {
 
               return Padding(
                 padding: const EdgeInsets.all(12.0),
-                // --- ADD InkWell WIDGET HERE ---
+
                 child: InkWell(
                   onTap: () {
-                    // This is the navigation magic!
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -50,7 +49,6 @@ class GeneratorPage extends StatelessWidget {
                     );
                   },
                   child: Card(
-                    // ... (rest of your Card widget) ...
                     clipBehavior: Clip.antiAlias,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
